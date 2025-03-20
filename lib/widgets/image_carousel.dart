@@ -32,7 +32,6 @@ class _ImageCarouselState extends State<ImageCarousel> {
       height: widget.height,
       child: Stack(
         children: [
-          // Images
           PageView.builder(
             controller: _pageController,
             itemCount: widget.images.length,
@@ -72,8 +71,6 @@ class _ImageCarouselState extends State<ImageCarousel> {
               );
             },
           ),
-          
-          // Page indicator
           if (widget.images.length > 1)
             Positioned(
               bottom: 8,

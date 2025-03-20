@@ -20,7 +20,6 @@ class TravelApp extends StatelessWidget {
           primary: Colors.red,
         ),
         useMaterial3: true,
-        // fontFamily: 'Inter', // Uncomment when fonts are available
       ),
       initialRoute: '/',
       routes: {

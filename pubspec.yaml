@@ -21,7 +21,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-  # Uncomment when fonts are available
+
   # fonts:
   #   - family: Inter
   #     fonts:

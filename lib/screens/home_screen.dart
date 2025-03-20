@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
                   const Icon(Icons.arrow_back, size: 24),
                   const SizedBox(width: 12),
                   const Text(
-                    'Yogyakarta',
+                    'Paket Wisata',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -46,8 +46,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            
-            // Trip List
+
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
@@ -59,7 +58,8 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TripDetailScreen(tripId: trip.id),
+                          builder: (context) =>
+                              TripDetailScreen(tripId: trip.id),
                         ),
                       );
                     },
@@ -75,7 +75,6 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Images
                           Stack(
                             children: [
                               SizedBox(
@@ -87,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                                         trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,
-                                        errorBuilder: (context, error, stackTrace) {
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
                                           return Container(
                                             height: double.infinity,
                                             color: Colors.grey[300],
@@ -100,10 +100,13 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                     Expanded(
                                       child: Image.network(
-                                        trip.images.length > 1 ? trip.images[1] : trip.images[0],
+                                        trip.images.length > 1
+                                            ? trip.images[1]
+                                            : trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,
-                                        errorBuilder: (context, error, stackTrace) {
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
                                           return Container(
                                             height: double.infinity,
                                             color: Colors.grey[300],
@@ -134,7 +137,8 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: const Color(0xFFE6F9E6),
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
                                         child: Text(
                                           feature,
@@ -150,8 +154,6 @@ class HomeScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          
-                          // Content
                           Padding(
                             padding: const EdgeInsets.all(12),
                             child: Column(
@@ -166,9 +168,7 @@ class HomeScreen extends StatelessWidget {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                
                                 const SizedBox(height: 4),
-                                
                                 Row(
                                   children: [
                                     const Icon(
@@ -215,7 +215,6 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                
                                 if (trip.popular) ...[
                                   const SizedBox(height: 8),
                                   Text(
@@ -228,9 +227,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                
                                 const SizedBox(height: 8),
-                                
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
@@ -242,7 +239,8 @@ class HomeScreen extends StatelessWidget {
                                         ),
                                         decoration: BoxDecoration(
                                           color: Colors.red,
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
                                         child: Text(
                                           trip.discount!,
@@ -254,15 +252,18 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     const Spacer(),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         if (trip.originalPrice != trip.price)
                                           Text(
-                                            currencyFormat.format(trip.originalPrice),
+                                            currencyFormat
+                                                .format(trip.originalPrice),
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Color(0xFF888888),
-                                              decoration: TextDecoration.lineThrough,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
                                             ),
                                           ),
                                         Text(

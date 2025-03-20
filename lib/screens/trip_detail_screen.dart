@@ -37,7 +37,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
       decimalDigits: 0,
     );
 
-    // Find the trip by ID
     final trip = trips.firstWhere(
       (trip) => trip.id == (widget.tripId ?? 1),
       orElse: () => trips[0],
@@ -48,7 +47,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header
             Container(
               padding: const EdgeInsets.all(16),
               decoration: const BoxDecoration(
@@ -87,13 +85,10 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                 ],
               ),
             ),
-
-            // Content
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    // Trip Image
                     Stack(
                       children: [
                         SizedBox(
@@ -245,8 +240,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                         ),
                       ],
                     ),
-
-                    // Trip Info
                     Container(
                       padding: const EdgeInsets.all(16),
                       color: Colors.white,
@@ -367,8 +360,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                         ],
                       ),
                     ),
-
-                    // Trip Type Label
                     if (trip.type != null)
                       Container(
                         margin: const EdgeInsets.only(top: 8),
@@ -377,8 +368,8 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           vertical: 6,
                         ),
                         decoration: BoxDecoration(
-                          color: trip.type == 'Private Trip' 
-                              ? const Color(0xFFE3F2FD) 
+                          color: trip.type == 'Private Trip'
+                              ? const Color(0xFFE3F2FD)
                               : const Color(0xFFFFF8E1),
                           borderRadius: BorderRadius.circular(4),
                         ),
@@ -392,8 +383,6 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                         ),
                       ),
-
-                    // Details Tab
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 16),
                       padding: const EdgeInsets.all(16),
@@ -430,30 +419,27 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                           const SizedBox(height: 8),
                           ...trip.itinerary.map((day) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                const Text('• ',
-                                    style: TextStyle(fontSize: 14)),
-                                Expanded(
-                                  child: Text(
-                                    day,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF555555),
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text('• ',
+                                        style: TextStyle(fontSize: 14)),
+                                    Expanded(
+                                      child: Text(
+                                        day,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF555555),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       ),
                     ),
-
-                    // Includes Tab
                     Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(16),
@@ -473,34 +459,31 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                           const SizedBox(height: 12),
                           ...trip.includes.map((item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.check_circle,
-                                  color: Color(0xFF22A722),
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF555555),
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.check_circle,
+                                      color: Color(0xFF22A722),
+                                      size: 16,
                                     ),
-                                  ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF555555),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       ),
                     ),
-
-                    // Excludes Tab
                     Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(16),
@@ -520,34 +503,31 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                           const SizedBox(height: 12),
                           ...trip.excludes.map((item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.cancel,
-                                  color: Colors.red,
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF555555),
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.cancel,
+                                      color: Colors.red,
+                                      size: 16,
                                     ),
-                                  ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF555555),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       ),
                     ),
-
-                    // Terms Tab
                     Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(16),
@@ -567,34 +547,31 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                           const SizedBox(height: 12),
                           ...trip.terms.map((item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                              children: [
-                                const Icon(
-                                  Icons.info_outline,
-                                  color: Color(0xFF2D7DF6),
-                                  size: 16,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    item,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xFF555555),
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Icon(
+                                      Icons.info_outline,
+                                      color: Color(0xFF2D7DF6),
+                                      size: 16,
                                     ),
-                                  ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        item,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Color(0xFF555555),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       ),
                     ),
-
-                    // Reviews Tab
                     Container(
                       margin: const EdgeInsets.only(bottom: 16),
                       padding: const EdgeInsets.all(16),
@@ -614,104 +591,102 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                           ),
                           const SizedBox(height: 16),
                           ...trip.reviewsData.map((review) => Container(
-                            padding: const EdgeInsets.only(bottom: 16),
-                            margin: const EdgeInsets.only(bottom: 16),
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Color(0xFFE5E5E5),
-                                  width: 1,
-                                ),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      review.name,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                                padding: const EdgeInsets.only(bottom: 16),
+                                margin: const EdgeInsets.only(bottom: 16),
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Color(0xFFE5E5E5),
+                                      width: 1,
                                     ),
-                                    Row(
-                                      children: List.generate(
-                                        5,
-                                        (index) => Icon(
-                                          Icons.star,
-                                          size: 14,
-                                          color: index < review.rating
-                                              ? const Color(
-                                                  0xFFFFB800)
-                                              : Colors.grey[300],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  review.comment,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color(0xFF555555),
-                                    height: 1.5,
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                Row(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.thumb_up_outlined,
-                                        size: 14,
-                                      ),
-                                      label: Text(
-                                        'Helpful (${review.helpful})',
-                                        style: const TextStyle(
-                                            fontSize: 12),
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.black54,
-                                        minimumSize: Size.zero,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                            vertical: 4),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          review.name,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Row(
+                                          children: List.generate(
+                                            5,
+                                            (index) => Icon(
+                                              Icons.star,
+                                              size: 14,
+                                              color: index < review.rating
+                                                  ? const Color(0xFFFFB800)
+                                                  : Colors.grey[300],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      review.comment,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Color(0xFF555555),
+                                        height: 1.5,
                                       ),
                                     ),
-                                    const SizedBox(width: 8),
-                                    TextButton.icon(
-                                      onPressed: () {},
-                                      icon: const Icon(
-                                        Icons.thumb_down_outlined,
-                                        size: 14,
-                                      ),
-                                      label: Text(
-                                        'Not Helpful (${review.notHelpful})',
-                                        style: const TextStyle(
-                                            fontSize: 12),
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        foregroundColor: Colors.black54,
-                                        minimumSize: Size.zero,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8,
-                                            vertical: 4),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        TextButton.icon(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.thumb_up_outlined,
+                                            size: 14,
+                                          ),
+                                          label: Text(
+                                            'Helpful (${review.helpful})',
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.black54,
+                                            minimumSize: Size.zero,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        TextButton.icon(
+                                          onPressed: () {},
+                                          icon: const Icon(
+                                            Icons.thumb_down_outlined,
+                                            size: 14,
+                                          ),
+                                          label: Text(
+                                            'Not Helpful (${review.notHelpful})',
+                                            style:
+                                                const TextStyle(fontSize: 12),
+                                          ),
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Colors.black54,
+                                            minimumSize: Size.zero,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 4),
+                                            tapTargetSize: MaterialTapTargetSize
+                                                .shrinkWrap,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                          )),
+                              )),
                         ],
                       ),
                     ),

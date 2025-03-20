@@ -1,6 +1,5 @@
 import 'package:travel_app/models/trip.dart';
 
-// Sample travel data
 final List<Trip> trips = [
   Trip(
     id: 1,
@@ -21,7 +20,8 @@ final List<Trip> trips = [
     discount: '20% OFF',
     popular: true,
     features: ['All-inclusive', 'Private Tour', 'Hotel Pickup'],
-    summary: 'Explore the beautiful city of Yogyakarta with visits to ancient temples including UNESCO World Heritage sites Borobudur and Prambanan. Enjoy local cuisine and traditional arts.',
+    summary:
+        'Explore the beautiful city of Yogyakarta with visits to ancient temples including UNESCO World Heritage sites Borobudur and Prambanan. Enjoy local cuisine and traditional arts.',
     includes: [
       'Hotel accommodation (2 nights)',
       'Professional tour guide',
@@ -53,21 +53,24 @@ final List<Trip> trips = [
     reviewsData: [
       Review(
         name: 'Budi Santoso',
-        comment: 'Amazing experience! The sunrise at Borobudur was breathtaking. Our guide was very knowledgeable and helped us understand the history of each place. Food recommendations were excellent too.',
+        comment:
+            'Amazing experience! The sunrise at Borobudur was breathtaking. Our guide was very knowledgeable and helped us understand the history of each place. Food recommendations were excellent too.',
         rating: 5,
         helpful: 32,
         notHelpful: 2,
       ),
       Review(
         name: 'Sarah Johnson',
-        comment: 'Great tour but it was very hot during the day. Bring sun protection! The temples are incredible and definitely worth visiting.',
+        comment:
+            'Great tour but it was very hot during the day. Bring sun protection! The temples are incredible and definitely worth visiting.',
         rating: 4,
         helpful: 18,
         notHelpful: 1,
       ),
       Review(
         name: 'Ahmad Rahman',
-        comment: 'Very well organized trip. The hotel was comfortable and centrally located. Would recommend taking extra cash for souvenirs at Malioboro.',
+        comment:
+            'Very well organized trip. The hotel was comfortable and centrally located. Would recommend taking extra cash for souvenirs at Malioboro.',
         rating: 5,
         helpful: 24,
         notHelpful: 0,
@@ -93,7 +96,8 @@ final List<Trip> trips = [
     discount: '12% OFF',
     popular: true,
     features: ['All-inclusive', 'Beach Access', 'Cultural Experience'],
-    summary: 'Experience the best of Bali with this comprehensive 5-day tour package. Visit sacred temples, relax on pristine beaches, and explore the famous rice terraces.',
+    summary:
+        'Experience the best of Bali with this comprehensive 5-day tour package. Visit sacred temples, relax on pristine beaches, and explore the famous rice terraces.',
     includes: [
       'Resort accommodation (4 nights)',
       'Daily breakfast and 2 dinners',
@@ -128,21 +132,24 @@ final List<Trip> trips = [
     reviewsData: [
       Review(
         name: 'Jessica Lee',
-        comment: 'Beautiful beaches and amazing cultural experience. The rice terraces were stunning and our guide was very friendly. Hotel had great amenities and delicious breakfast.',
+        comment:
+            'Beautiful beaches and amazing cultural experience. The rice terraces were stunning and our guide was very friendly. Hotel had great amenities and delicious breakfast.',
         rating: 5,
         helpful: 41,
         notHelpful: 3,
       ),
       Review(
         name: 'Michael Wong',
-        comment: 'Great trip overall but I would have preferred more free time to explore on my own. The spa treatment was excellent and very relaxing!',
+        comment:
+            'Great trip overall but I would have preferred more free time to explore on my own. The spa treatment was excellent and very relaxing!',
         rating: 4,
         helpful: 15,
         notHelpful: 2,
       ),
       Review(
         name: 'Linda Anderson',
-        comment: 'Perfect vacation! The tour was well-organized and we got to see all the major attractions. Definitely bring a good camera for the rice terraces!',
+        comment:
+            'Perfect vacation! The tour was well-organized and we got to see all the major attractions. Definitely bring a good camera for the rice terraces!',
         rating: 5,
         helpful: 29,
         notHelpful: 1,
@@ -168,7 +175,8 @@ final List<Trip> trips = [
     discount: null,
     popular: false,
     features: ['Island Hopping', 'Snorkeling', 'Waterfall Trek'],
-    summary: 'Discover the pristine beauty of Lombok and the Gili Islands with this exciting 4-day adventure package. Trek to waterfalls, snorkel in crystal clear waters, and enjoy beautiful beaches.',
+    summary:
+        'Discover the pristine beauty of Lombok and the Gili Islands with this exciting 4-day adventure package. Trek to waterfalls, snorkel in crystal clear waters, and enjoy beautiful beaches.',
     includes: [
       'Hotel accommodation (3 nights)',
       'Daily breakfast',
@@ -201,21 +209,24 @@ final List<Trip> trips = [
     reviewsData: [
       Review(
         name: 'Robert Chen',
-        comment: 'The Gili Islands were the highlight of the trip! The snorkeling spots were teeming with colorful fish and sea turtles. The waterfall trek was more challenging than expected but definitely worth it.',
+        comment:
+            'The Gili Islands were the highlight of the trip! The snorkeling spots were teeming with colorful fish and sea turtles. The waterfall trek was more challenging than expected but definitely worth it.',
         rating: 5,
         helpful: 27,
         notHelpful: 1,
       ),
       Review(
         name: 'Emily Davis',
-        comment: 'Good trip overall but the boat to Gili was very crowded. The waterfalls were beautiful and our guide was helpful and informative throughout the trek.',
+        comment:
+            'Good trip overall but the boat to Gili was very crowded. The waterfalls were beautiful and our guide was helpful and informative throughout the trek.',
         rating: 4,
         helpful: 12,
         notHelpful: 3,
       ),
       Review(
         name: 'David Wilson',
-        comment: 'Excellent value for the price. The accommodations were clean and comfortable. Bring water shoes for the waterfall trek and underwater camera for snorkeling!',
+        comment:
+            'Excellent value for the price. The accommodations were clean and comfortable. Bring water shoes for the waterfall trek and underwater camera for snorkeling!',
         rating: 5,
         helpful: 19,
         notHelpful: 0,

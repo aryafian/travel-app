@@ -1,0 +1,151 @@
+[
+  {
+    "id": 1,
+    "title": "Mount Bromo Spectacular Sunrise",
+    "location": "Malang, East Java",
+    "description": "Experience the breathtaking sunrise at Mount Bromo, one of Indonesia's most iconic landscapes. This tour takes you through the Sea of Sand to the peak for a perfect view of the sunrise over the caldera.",
+    "price": 1250000,
+    "rating": 4.8,
+    "reviewCount": 120,
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272",
+      "https://images.unsplash.com/photo-1588733103629-b77afe0425ce",
+      "https://images.unsplash.com/photo-1583417319070-4a69db38a482"
+    ],
+    "includes": [
+      "Jeep transportation", 
+      "Professional guide", 
+      "Entrance tickets", 
+      "Breakfast", 
+      "Accommodation"
+    ],
+    "excludes": [
+      "Personal expenses", 
+      "Travel insurance", 
+      "Dinner"
+    ],
+    "terms": "Booking must be made at least 3 days before departure. Cancellation within 24 hours will incur a 50% fee.",
+    "duration": 2,
+    "type": "Open Trip"
+  },
+  {
+    "id": 2,
+    "title": "Bali Paradise Island Getaway",
+    "location": "Bali, Indonesia",
+    "description": "Discover the beauty of Bali with this comprehensive tour package. Visit the famous temples, enjoy stunning beaches, and experience the unique Balinese culture.",
+    "price": 2750000,
+    "rating": 4.9,
+    "reviewCount": 256,
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8",
+      "https://images.unsplash.com/photo-1518548419970-58e3b4079ab2",
+      "https://images.unsplash.com/photo-1537996194471-e657df975ab4"
+    ],
+    "includes": [
+      "Airport transfers", 
+      "Hotel accommodation", 
+      "Daily breakfast", 
+      "Private driver", 
+      "Temple entrance fees"
+    ],
+    "excludes": [
+      "Flights", 
+      "Personal expenses", 
+      "Travel insurance", 
+      "Optional activities"
+    ],
+    "terms": "Booking confirmation subject to availability. Free cancellation up to 7 days before departure.",
+    "duration": 5,
+    "type": "Private Trip"
+  },
+  {
+    "id": 3,
+    "title": "Yogyakarta Heritage Tour",
+    "location": "Yogyakarta, Java",
+    "description": "Explore the rich cultural heritage of Yogyakarta, from the magnificent Borobudur and Prambanan temples to the vibrant art scene and traditional crafts of the city.",
+    "price": 1850000,
+    "rating": 4.7,
+    "reviewCount": 189,
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1584810359583-96fc3448beaa",
+      "https://images.unsplash.com/photo-1583417267826-aebc4d1542e1",
+      "https://images.unsplash.com/photo-1518004042620-4d4c5affdd8d"
+    ],
+    "includes": [
+      "Hotel accommodation",
+      "Breakfast",
+      "Transportation",
+      "Guide",
+      "Entrance tickets"
+    ],
+    "excludes": [
+      "Flights to Yogyakarta",
+      "Personal expenses",
+      "Optional activities",
+      "Travel insurance"
+    ],
+    "terms": "Minimum 2 participants required. Tour itinerary subject to change based on local conditions.",
+    "duration": 3,
+    "type": "Open Trip"
+  },
+  {
+    "id": 4,
+    "title": "Raja Ampat Diving Adventure",
+    "location": "West Papua",
+    "description": "Dive into the crystal-clear waters of Raja Ampat, home to the world's richest marine biodiversity. Explore vibrant coral reefs, encounter unique fish species, and experience true underwater paradise.",
+    "price": 8500000,
+    "rating": 4.9,
+    "reviewCount": 87,
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1516684732162-798a0062be99",
+      "https://images.unsplash.com/photo-1582979512210-99b6a53386f9",
+      "https://images.unsplash.com/photo-1560275619-4cc5fa59d3ae"
+    ],
+    "includes": [
+      "Resort accommodation",
+      "Full-board meals",
+      "Diving equipment",
+      "Professional diving guide",
+      "Boat transfers"
+    ],
+    "excludes": [
+      "Flights to Sorong",
+      "Alcoholic beverages",
+      "Personal expenses",
+      "Travel insurance"
+    ],
+    "terms": "Divers must have PADI Open Water certification or equivalent. Medical clearance required.",
+    "duration": 7,
+    "type": "Private Trip"
+  },
+  {
+    "id": 5,
+    "title": "Komodo Island Dragon Expedition",
+    "location": "East Nusa Tenggara",
+    "description": "Embark on an adventure to meet the prehistoric Komodo dragons in their natural habitat. Trek through the rugged terrain of Komodo Island and snorkel in the pristine waters of Pink Beach.",
+    "price": 4250000,
+    "rating": 4.6,
+    "reviewCount": 132,
+    "imageUrls": [
+      "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86",
+      "https://images.unsplash.com/photo-1599074914978-2946b69e5a4d",
+      "https://images.unsplash.com/photo-1606496638608-3be929fae889"
+    ],
+    "includes": [
+      "Boat transportation",
+      "Island entrance fees",
+      "Professional ranger guide",
+      "Meals",
+      "Snorkeling equipment"
+    ],
+    "excludes": [
+      "Flights to Labuan Bajo",
+      "Hotel accommodation",
+      "Personal expenses",
+      "Travel insurance"
+    ],
+    "terms": "Medium fitness level required. Not suitable for children under 10 years old.",
+    "duration": 3,
+    "type": "Open Trip"
+  }
+]

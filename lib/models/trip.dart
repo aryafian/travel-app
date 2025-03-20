@@ -1,17 +1,16 @@
 class Trip {
   final int id;
   final String title;
+  final String location;
+  final String duration;
   final List<String> images;
+  final double rating;
+  final int reviews;
   final int price;
   final int originalPrice;
   final String? discount;
-  final double rating;
-  final int reviews;
-  final String location;
-  final String type;
-  final List<String> features;
   final bool popular;
-  final String duration;
+  final List<String> features;
   final String summary;
   final List<String> includes;
   final List<String> excludes;
@@ -22,17 +21,16 @@ class Trip {
   Trip({
     required this.id,
     required this.title,
+    required this.location,
+    required this.duration,
     required this.images,
-    required this.originalPrice,
-    required this.price,
-    this.discount,
     required this.rating,
     required this.reviews,
-    required this.location,
-    required this.type,
-    required this.features,
+    required this.price,
+    required this.originalPrice,
+    this.discount,
     required this.popular,
-    required this.duration,
+    required this.features,
     required this.summary,
     required this.includes,
     required this.excludes,
@@ -44,15 +42,15 @@ class Trip {
 
 class Review {
   final String name;
-  final int rating;
   final String comment;
+  final int rating;
   final int helpful;
   final int notHelpful;
 
   Review({
     required this.name,
-    required this.rating,
     required this.comment,
+    required this.rating,
     required this.helpful,
     required this.notHelpful,
   });

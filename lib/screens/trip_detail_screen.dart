@@ -1,708 +1,784 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../data/trips_data.dart';
-import '../models/trip.dart';
+import 'package:travel_app/data/trips_data.dart';
+import 'package:travel_app/models/trip.dart';
 
-class TripDetailScreen extends StatelessWidget {
-  final int tripId;
+class TripDetailScreen extends StatefulWidget {
+  final int? tripId;
 
-  const TripDetailScreen({Key? key, required this.tripId}) : super(key: key);
+  const TripDetailScreen({super.key, this.tripId});
+
+  @override
+  State<TripDetailScreen> createState() => _TripDetailScreenState();
+}
+
+class _TripDetailScreenState extends State<TripDetailScreen> {
+  bool isFavorite = false;
+  int _currentPage = 0;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _currentPage);
+  }
+
+  void toggleFavorite() {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Trip trip = trips.firstWhere((trip) => trip.id == tripId);
     final currencyFormat = NumberFormat.currency(
       locale: 'id',
       symbol: 'IDR ',
       decimalDigits: 0,
     );
 
+    // Find the trip by ID
+    final trip = trips.firstWhere(
+      (trip) => trip.id == (widget.tripId ?? 1),
+      orElse: () => trips[0],
+    );
+
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          // App Bar with image
-          SliverAppBar(
-            expandedHeight: 250,
-            pinned: true,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  PageView.builder(
-                    itemCount: trip.images.length,
-                    itemBuilder: (context, index) {
-                      return Image.network(
-                        trip.images[index],
-                        fit: BoxFit.cover,
-                      );
-                    },
+      backgroundColor: const Color(0xFFF5F5F5),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0xFFE5E5E5),
+                    width: 1,
                   ),
-                  // Bottom gradient for better text visibility
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    height: 80,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.transparent,
-                            Colors.black.withOpacity(0.7),
-                          ],
-                        ),
+                ),
+              ),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(Icons.chevron_left, size: 24),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      trip.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
+                      color: isFavorite ? Colors.red : null,
+                    ),
+                    onPressed: toggleFavorite,
                   ),
                 ],
               ),
             ),
-            leading: Container(
-              margin: const EdgeInsets.only(left: 8, top: 8),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.8),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-            actions: [
-              Container(
-                margin: const EdgeInsets.only(right: 8, top: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.favorite_border),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Added to favorites'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(right: 8, top: 8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.share),
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Share feature coming soon'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-          
-          // Content
-          SliverToBoxAdapter(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Title & Type Badge
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              trip.title,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+
+            // Content
+            Expanded(
+              child: DefaultTabController(
+                length: 5,
+                child: Column(
+                  children: [
+                    // Trip Image
+                    Stack(
+                      children: [
+                        SizedBox(
+                          height: 250,
+                          child: PageView.builder(
+                            controller: _pageController,
+                            itemCount: trip.images.length,
+                            onPageChanged: (index) {
+                              setState(() {
+                                _currentPage = index;
+                              });
+                            },
+                            itemBuilder: (context, index) {
+                              return Image.asset(
+                                trip.images[index],
+                                height: 250,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    height: 250,
+                                    color: Colors.grey[300],
+                                    child: const Center(
+                                      child: Icon(Icons.error, size: 50),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                        Positioned(
+                          bottom: 16,
+                          right: 16,
+                          child: Row(
+                            children: List.generate(
+                              trip.images.length,
+                              (index) => Container(
+                                width: 8,
+                                height: 8,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 2),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: index == _currentPage
+                                      ? Colors.white
+                                      : Colors.white.withOpacity(0.6),
+                                ),
                               ),
                             ),
                           ),
-                          Container(
+                        ),
+                        Positioned(
+                          top: 16,
+                          left: 16,
+                          child: Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 8,
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: trip.type == 'Open Trip'
-                                  ? const Color(0xFFE3F2FD)
-                                  : const Color(0xFFFFF9C4),
-                              borderRadius: BorderRadius.circular(4),
+                              color: Colors.white.withOpacity(0.8),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            child: Text(
-                              trip.type,
-                              style: TextStyle(
-                                color: trip.type == 'Open Trip'
-                                    ? Colors.blue[800]
-                                    : Colors.orange[800],
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 8),
-                      
-                      // Rating & Location
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xFFFFB800),
-                            size: 20,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            trip.rating.toString(),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  trip.location,
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
                             ),
                           ),
-                          const Text(
-                            '/5',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF888888),
-                            ),
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '(${trip.reviews.toString()} Reviews)',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF888888),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.red,
-                            size: 16,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            trip.location,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF888888),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Duration
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.access_time,
-                            color: Color(0xFF888888),
-                            size: 16,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            'Duration: ${trip.duration}',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF888888),
-                            ),
-                          ),
-                        ],
-                      ),
-                      
-                      const SizedBox(height: 16),
-                      
-                      // Price
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          if (trip.discount != null)
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
-                              ),
+                        ),
+                        Positioned(
+                          top: 100,
+                          left: 16,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (_currentPage > 0) {
+                                  _currentPage--;
+                                } else {
+                                  _currentPage = trip.images.length - 1;
+                                }
+                                _pageController.animateToPage(
+                                  _currentPage,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.black.withOpacity(0.3),
+                                shape: BoxShape.circle,
                               ),
-                              child: Text(
-                                trip.discount!,
-                                style: const TextStyle(
+                              child: const Text(
+                                '<',
+                                style: TextStyle(
                                   color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: 100,
+                          right: 16,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                if (_currentPage < trip.images.length - 1) {
+                                  _currentPage++;
+                                } else {
+                                  _currentPage = 0;
+                                }
+                                _pageController.animateToPage(
+                                  _currentPage,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.3),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Text(
+                                '>',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    // Trip Info
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.white,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  trip.title,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              if (trip.discount != null)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    trip.discount!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.star,
+                                color: Color(0xFFFFB800),
+                                size: 16,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                trip.rating.toString(),
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
-                          const Spacer(),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              if (trip.originalPrice != trip.price)
-                                Text(
-                                  currencyFormat.format(trip.originalPrice),
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Color(0xFF888888),
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
+                              const Text(
+                                '/5',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF888888),
                                 ),
+                              ),
+                              const SizedBox(width: 4),
                               Text(
-                                currencyFormat.format(trip.price),
+                                '(${trip.reviews.toString()} Review)',
                                 style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.red,
+                                  fontSize: 14,
+                                  color: Color(0xFF888888),
                                 ),
                               ),
                               const Text(
-                                '/orang/paket',
+                                ' • ',
                                 style: TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFFCCCCCC),
+                                ),
+                              ),
+                              Text(
+                                trip.duration,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Color(0xFF888888),
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Divider
-                const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                
-                // Summary
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Summary',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        trip.summary,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Color(0xFF666666),
-                          height: 1.5,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                
-                // Divider
-                const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                
-                // Includes
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'What\'s Included',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ...trip.includes.map((item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.check_circle,
-                              color: Colors.green,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF666666),
+                          const SizedBox(height: 12),
+                          Wrap(
+                            spacing: 4,
+                            runSpacing: 4,
+                            children: trip.features.map((feature) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                    ],
-                  ),
-                ),
-                
-                // Divider
-                const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                
-                // Excludes
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'What\'s Not Included',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ...trip.excludes.map((item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                              size: 16,
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF666666),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                    ],
-                  ),
-                ),
-                
-                // Divider
-                const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                
-                // Itinerary
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Itinerary',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ...trip.itinerary.asMap().entries.map((entry) {
-                        final index = entry.key;
-                        final item = entry.value;
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 16),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 24,
-                                height: 24,
-                                alignment: Alignment.center,
-                                decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFE6F9E6),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
-                                  '${index + 1}',
+                                  feature,
                                   style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF22A722),
+                                    fontSize: 12,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
+                              );
+                            }).toList(),
                           ),
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                ),
-                
-                // Divider
-                const Divider(height: 1, color: Color(0xFFE5E5E5)),
-                
-                // Terms
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Terms & Conditions',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      ...trip.terms.map((item) => Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.info,
-                              color: Colors.blue,
-                              size: 16,
+                          const SizedBox(height: 12),
+                          Text(
+                            trip.summary,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF555555),
                             ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF666666),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                    ],
-                  ),
-                ),
-                
-                // Reviews
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Reviews',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      ...trip.reviewsData.map((review) => Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: const Color(0xFFE5E5E5),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
+                        ],
+                      ),
+                    ),
+
+                    // Tabs
+                    const TabBar(
+                      tabs: [
+                        Tab(text: 'Details'),
+                        Tab(text: 'Includes'),
+                        Tab(text: 'Excludes'),
+                        Tab(text: 'Terms'),
+                        Tab(text: 'Reviews'),
+                      ],
+                      labelColor: Colors.black,
+                      unselectedLabelColor: Color(0xFF888888),
+                      indicatorColor: Colors.black,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+
+                    // Tab Content
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          // Details Tab
+                          SingleChildScrollView(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  backgroundColor: Colors.grey[300],
-                                  child: Text(
-                                    review.name[0],
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                const Text(
+                                  'Trip Details',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        review.name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'This ${trip.duration} package offers a complete experience of the destination. The trip is designed to provide both adventure and relaxation, with carefully selected accommodations and activities.',
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF555555),
+                                    height: 1.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 24),
+                                const Text(
+                                  'Itinerary Highlights',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ...trip.itinerary.map((day) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('• ',
+                                              style: TextStyle(fontSize: 14)),
+                                          Expanded(
+                                            child: Text(
+                                              day,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Row(
-                                        children: List.generate(
-                                          5,
-                                          (index) => Icon(
-                                            Icons.star,
-                                            size: 16,
-                                            color: index < review.rating
-                                                ? const Color(0xFFFFB800)
-                                                : Colors.grey[300],
+                                    )),
+                              ],
+                            ),
+                          ),
+
+                          // Includes Tab
+                          SingleChildScrollView(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'What\'s Included',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ...trip.includes.map((item) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.check_circle,
+                                            color: Color(0xFF22A722),
+                                            size: 20,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+
+                          // Excludes Tab
+                          SingleChildScrollView(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'What\'s Not Included',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ...trip.excludes.map((item) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.cancel,
+                                            color: Colors.red,
+                                            size: 20,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+
+                          // Terms Tab
+                          SingleChildScrollView(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Terms & Conditions',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                ...trip.terms.map((item) => Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 12),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Icon(
+                                            Icons.info_outline,
+                                            color: Color(0xFF2D7DF6),
+                                            size: 20,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Color(0xFF555555),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          ),
+
+                          // Reviews Tab
+                          SingleChildScrollView(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Customer Reviews',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                ...trip.reviewsData.map((review) => Container(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 16),
+                                      margin: const EdgeInsets.only(bottom: 16),
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xFFE5E5E5),
+                                            width: 1,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                review.name,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: List.generate(
+                                                  5,
+                                                  (index) => Icon(
+                                                    Icons.star,
+                                                    size: 14,
+                                                    color: index < review.rating
+                                                        ? const Color(
+                                                            0xFFFFB800)
+                                                        : Colors.grey[300],
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            review.comment,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Color(0xFF555555),
+                                              height: 1.5,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Row(
+                                            children: [
+                                              TextButton.icon(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons.thumb_up_outlined,
+                                                  size: 14,
+                                                ),
+                                                label: Text(
+                                                  'Helpful (${review.helpful})',
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                      Colors.black54,
+                                                  minimumSize: Size.zero,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                              ),
+                                              TextButton.icon(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons.thumb_down_outlined,
+                                                  size: 14,
+                                                ),
+                                                label: Text(
+                                                  'Not Helpful (${review.notHelpful})',
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                                style: TextButton.styleFrom(
+                                                  foregroundColor:
+                                                      Colors.black54,
+                                                  minimumSize: Size.zero,
+                                                  padding:
+                                                      const EdgeInsets.symmetric(
+                                                          horizontal: 8,
+                                                          vertical: 4),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                               ],
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              review.comment,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF666666),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                TextButton.icon(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.thumb_up,
-                                    size: 16,
-                                  ),
-                                  label: Text('Helpful (${review.helpful})'),
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                TextButton.icon(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.thumb_down,
-                                    size: 16,
-                                  ),
-                                  label: Text('Not Helpful (${review.notHelpful})'),
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    minimumSize: Size.zero,
-                                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      )),
-                      
-                      // View All Reviews Button
-                      Center(
-                        child: TextButton(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('View all reviews feature coming soon'),
-                                duration: Duration(seconds: 1),
-                              ),
-                            );
-                          },
-                          child: const Text('View All Reviews'),
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                
-                const SizedBox(height: 80), // Space for floating bottom bar
-              ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-      
-      bottomSheet: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: const BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
+              color: Color(0x29000000),
+              offset: Offset(0, -3),
+              blurRadius: 6,
             ),
           ],
         ),
         child: Row(
           children: [
             Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Chat button clicked'),
-                      duration: Duration(seconds: 1),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (trip.originalPrice != trip.price)
+                    Text(
+                      currencyFormat.format(trip.originalPrice),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF888888),
+                        decoration: TextDecoration.lineThrough,
+                      ),
                     ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.blue,
-                  side: const BorderSide(color: Colors.blue),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                ),
-                child: const Text('Chat'),
+                  Text(
+                    currencyFormat.format(trip.price),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                  const Text(
+                    '/orang/paket',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Color(0xFF888888),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(width: 16),
-            Expanded(
-              flex: 2,
-              child: ElevatedButton(
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Book now button clicked'),
-                      duration: Duration(seconds: 1),
-                    ),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Trip booked successfully!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Text('Book Now'),
+              ),
+              child: const Text(
+                'Book Now',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ],

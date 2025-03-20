@@ -1,4 +1,4 @@
-modules = ["flutter"]
+modules = ["flutter", "dart"]
 
 [nix]
 channel = "stable-24_05"

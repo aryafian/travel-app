@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../data/trips_data.dart';
-import 'trip_detail_screen.dart';
+import 'package:travel_app/data/trips_data.dart';
+import 'package:travel_app/screens/trip_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +33,16 @@ class HomeScreen extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Image.network(
-                    'https://static.tiket.photos/image/upload/v1581488510/logo/2020/02/12/2b30a830-2d20-4f1a-86e1-f3664158c8ed-1581488509520-889688c3d2cd2af3bf3762a35925e295.png',
-                    height: 24,
-                  ),
+                  const Icon(Icons.arrow_back, size: 24),
                   const SizedBox(width: 12),
                   const Text(
-                    'Travel',
+                    'Yogyakarta',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const Spacer(),
-                  const Icon(Icons.search, size: 24),
                 ],
               ),
             ),
@@ -87,17 +83,35 @@ class HomeScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Image.network(
+                                      child: Image.asset(
                                         trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            height: double.infinity,
+                                            color: Colors.grey[300],
+                                            child: const Center(
+                                              child: Icon(Icons.error),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                     Expanded(
-                                      child: Image.network(
+                                      child: Image.asset(
                                         trip.images.length > 1 ? trip.images[1] : trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            height: double.infinity,
+                                            color: Colors.grey[300],
+                                            child: const Center(
+                                              child: Icon(Icons.error),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ],
@@ -206,7 +220,7 @@ class HomeScreen extends StatelessWidget {
                                   const SizedBox(height: 8),
                                   Text(
                                     trip.id == 1
-                                        ? 'Terlaris #5 di ${trip.location.split(',')[0]}'
+                                        ? 'Terlaris #5 di Yogyakarta'
                                         : 'Mantap! Trip ini lagi diminati',
                                     style: const TextStyle(
                                       fontSize: 14,

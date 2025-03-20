@@ -42,10 +42,22 @@
 <body>
   <script>
     window.addEventListener('load', function(ev) {
+      // Set up buildConfig for Flutter web
+      window._flutter = window._flutter || {};
+      window._flutter.buildConfig = {
+        builds: [{
+          renderer: "html",
+          compileTarget: "js",
+          mainJsPath: "main.dart.js",
+          engineRevision: "1"
+        }],
+        engineRevision: "1"
+      };
+      
       // Download main.dart.js
-      _flutter.loader.load({
-        serviceWorkerSettings: {
-          serviceWorkerVersion: '{{flutter_service_worker_version}}',
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
         },
         onEntrypointLoaded: function(engineInitializer) {
           engineInitializer.initializeEngine().then(function(appRunner) {

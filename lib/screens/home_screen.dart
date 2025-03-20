@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      child: Image.asset(
+                                      child: Image.network(
                                         trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,
@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Expanded(
-                                      child: Image.asset(
+                                      child: Image.network(
                                         trip.images.length > 1 ? trip.images[1] : trip.images[0],
                                         fit: BoxFit.cover,
                                         height: double.infinity,

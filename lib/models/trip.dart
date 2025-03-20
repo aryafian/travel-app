@@ -17,6 +17,7 @@ class Trip {
   final List<String> terms;
   final List<String> itinerary;
   final List<Review> reviewsData;
+  final String type;
 
   Trip({
     required this.id,
@@ -37,6 +38,7 @@ class Trip {
     required this.terms,
     required this.itinerary,
     required this.reviewsData,
+    this.type = 'Open Trip',
   });
 }
 

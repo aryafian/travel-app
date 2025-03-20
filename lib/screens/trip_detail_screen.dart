@@ -108,7 +108,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                               });
                             },
                             itemBuilder: (context, index) {
-                              return Image.asset(
+                              return Image.network(
                                 trip.images[index],
                                 height: 250,
                                 width: double.infinity,

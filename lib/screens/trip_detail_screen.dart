@@ -90,8 +90,7 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
 
             // Content
             Expanded(
-              child: DefaultTabController(
-                length: 5,
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     // Trip Image
@@ -369,336 +368,350 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                       ),
                     ),
 
-                    // Tabs
-                    const TabBar(
-                      tabs: [
-                        Tab(text: 'Details'),
-                        Tab(text: 'Includes'),
-                        Tab(text: 'Excludes'),
-                        Tab(text: 'Terms'),
-                        Tab(text: 'Reviews'),
-                      ],
-                      labelColor: Colors.black,
-                      unselectedLabelColor: Color(0xFF888888),
-                      indicatorColor: Colors.black,
-                      labelStyle: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                    // Trip Type Label
+                    if (trip.type != null)
+                      Container(
+                        margin: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: trip.type == 'Private Trip' 
+                              ? const Color(0xFFE3F2FD) 
+                              : const Color(0xFFFFF8E1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          trip.type!,
+                          style: TextStyle(
+                            color: trip.type == 'Private Trip'
+                                ? Colors.blue.shade800
+                                : Colors.orange.shade800,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+
+                    // Details Tab
+                    Container(
+                      margin: const EdgeInsets.symmetric(vertical: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Trip Details',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'This ${trip.duration} package offers a complete experience of the destination. The trip is designed to provide both adventure and relaxation, with carefully selected accommodations and activities.',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF555555),
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text(
+                            'Itinerary',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          ...trip.itinerary.map((day) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                const Text('• ',
+                                    style: TextStyle(fontSize: 14)),
+                                Expanded(
+                                  child: Text(
+                                    day,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF555555),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ],
                       ),
                     ),
 
-                    // Tab Content
-                    Expanded(
-                      child: TabBarView(
+                    // Includes Tab
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Details Tab
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(16),
+                          const Text(
+                            'What\'s Included',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          ...trip.includes.map((item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.check_circle,
+                                  color: Color(0xFF22A722),
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF555555),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ],
+                      ),
+                    ),
+
+                    // Excludes Tab
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'What\'s Not Included',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          ...trip.excludes.map((item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.cancel,
+                                  color: Colors.red,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF555555),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ],
+                      ),
+                    ),
+
+                    // Terms Tab
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Terms & Conditions',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          ...trip.terms.map((item) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.info_outline,
+                                  color: Color(0xFF2D7DF6),
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Color(0xFF555555),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                        ],
+                      ),
+                    ),
+
+                    // Reviews Tab
+                    Container(
+                      margin: const EdgeInsets.only(bottom: 16),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Customer Reviews',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          ...trip.reviewsData.map((review) => Container(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            margin: const EdgeInsets.only(bottom: 16),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Color(0xFFE5E5E5),
+                                  width: 1,
+                                ),
+                              ),
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Trip Details',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      review.name,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Row(
+                                      children: List.generate(
+                                        5,
+                                        (index) => Icon(
+                                          Icons.star,
+                                          size: 14,
+                                          color: index < review.rating
+                                              ? const Color(
+                                                  0xFFFFB800)
+                                              : Colors.grey[300],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'This ${trip.duration} package offers a complete experience of the destination. The trip is designed to provide both adventure and relaxation, with carefully selected accommodations and activities.',
+                                  review.comment,
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Color(0xFF555555),
                                     height: 1.5,
                                   ),
                                 ),
-                                const SizedBox(height: 24),
-                                const Text(
-                                  'Itinerary Highlights',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
                                 const SizedBox(height: 8),
-                                ...trip.itinerary.map((day) => Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('• ',
-                                              style: TextStyle(fontSize: 14)),
-                                          Expanded(
-                                            child: Text(
-                                              day,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF555555),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Row(
+                                  children: [
+                                    TextButton.icon(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.thumb_up_outlined,
+                                        size: 14,
                                       ),
-                                    )),
-                              ],
-                            ),
-                          ),
-
-                          // Includes Tab
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'What\'s Included',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                                      label: Text(
+                                        'Helpful (${review.helpful})',
+                                        style: const TextStyle(
+                                            fontSize: 12),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.black54,
+                                        minimumSize: Size.zero,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    TextButton.icon(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.thumb_down_outlined,
+                                        size: 14,
+                                      ),
+                                      label: Text(
+                                        'Not Helpful (${review.notHelpful})',
+                                        style: const TextStyle(
+                                            fontSize: 12),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Colors.black54,
+                                        minimumSize: Size.zero,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 4),
+                                        tapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                const SizedBox(height: 8),
-                                ...trip.includes.map((item) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.check_circle,
-                                            color: Color(0xFF22A722),
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF555555),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
                               ],
                             ),
-                          ),
-
-                          // Excludes Tab
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'What\'s Not Included',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                ...trip.excludes.map((item) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.cancel,
-                                            color: Colors.red,
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF555555),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-
-                          // Terms Tab
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Terms & Conditions',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                ...trip.terms.map((item) => Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.info_outline,
-                                            color: Color(0xFF2D7DF6),
-                                            size: 20,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF555555),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
-
-                          // Reviews Tab
-                          SingleChildScrollView(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Customer Reviews',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                ...trip.reviewsData.map((review) => Container(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 16),
-                                      margin: const EdgeInsets.only(bottom: 16),
-                                      decoration: const BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: Color(0xFFE5E5E5),
-                                            width: 1,
-                                          ),
-                                        ),
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                review.name,
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                              Row(
-                                                children: List.generate(
-                                                  5,
-                                                  (index) => Icon(
-                                                    Icons.star,
-                                                    size: 14,
-                                                    color: index < review.rating
-                                                        ? const Color(
-                                                            0xFFFFB800)
-                                                        : Colors.grey[300],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            review.comment,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF555555),
-                                              height: 1.5,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              TextButton.icon(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons.thumb_up_outlined,
-                                                  size: 14,
-                                                ),
-                                                label: Text(
-                                                  'Helpful (${review.helpful})',
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                      Colors.black54,
-                                                  minimumSize: Size.zero,
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 8,
-                                                          vertical: 4),
-                                                  tapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                ),
-                                              ),
-                                              TextButton.icon(
-                                                onPressed: () {},
-                                                icon: const Icon(
-                                                  Icons.thumb_down_outlined,
-                                                  size: 14,
-                                                ),
-                                                label: Text(
-                                                  'Not Helpful (${review.notHelpful})',
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                                style: TextButton.styleFrom(
-                                                  foregroundColor:
-                                                      Colors.black54,
-                                                  minimumSize: Size.zero,
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                          horizontal: 8,
-                                                          vertical: 4),
-                                                  tapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    )),
-                              ],
-                            ),
-                          ),
+                          )),
                         ],
                       ),
                     ),
@@ -740,13 +753,13 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
                   Text(
                     currencyFormat.format(trip.price),
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Colors.red,
                     ),
                   ),
                   const Text(
-                    '/orang/paket',
+                    'per person',
                     style: TextStyle(
                       fontSize: 12,
                       color: Color(0xFF888888),
